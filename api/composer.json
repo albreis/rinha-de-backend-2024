@@ -1,0 +1,5 @@
+{
+    "require": {
+        "albreis/router": "^2.0"
+    }
+}

@@ -1,0 +1,49 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "bac458c9a218ab384a0e4d9a72403323",
+    "packages": [
+        {
+            "name": "albreis/router",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/albreis/router.git",
+                "reference": "e1bd8cbc86772c522b7f9f618196a5c00c56262b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/albreis/router/zipball/e1bd8cbc86772c522b7f9f618196a5c00c56262b",
+                "reference": "e1bd8cbc86772c522b7f9f618196a5c00c56262b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Albreis\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/albreis/router/issues",
+                "source": "https://github.com/albreis/router/tree/2.0.2"
+            },
+            "time": "2021-04-18T13:38:23+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}

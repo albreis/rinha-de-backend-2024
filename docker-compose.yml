@@ -1,0 +1,71 @@
+version: "3.9"
+networks:
+  rinha:
+volumes:
+  pgdata:
+services:
+  traefik:
+    image: traefik:v2.5
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+    ports:
+      - "9999:80"
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  api: &api
+    image: ghcr.io/albreis/rinha-de-backend-2024
+    # command: php server.php
+    environment:
+      AUTORELOAD_PROGRAMS: "swoole"
+      AUTORELOAD_ANY_FILES: 1
+      DISABLE_DEFAULT_SERVER: 0
+      PHP_IDE_CONFIG: "serverName=swoole"
+      XDEBUG_SESSION: "VSCODE"
+      DB_HOST: db
+      DB_PASSWORD: 123
+      DB_USER: admin
+      DB_NAME: rinha
+    build: .
+    volumes:
+      - ./api:/var/www
+      - ./.docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ./.docker/yasd.ini:/usr/local/etc/php/conf.d/yasd.ini
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rinha-de-backend.rule=Host(`localhost`)"
+      - "traefik.http.services.rinha-de-backend.loadbalancer.server.port=9501"
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: "500MB"
+  db:
+    image: postgres:latest
+    hostname: db
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=rinha
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: "0.13"
+          memory: "140MB"
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: 123
+    ports:
+      - 9001:80
+    depends_on:
+      - db
